@@ -290,30 +290,35 @@ Uint32 i =0;
   //=================================
   // Just sit and loop forever:
   // PWM pins can be observed with a scope.	
+  // GPIO2 is the master clock, controlled by PWM at 1MHz
+  // GPIO18 is a test line for syncing with an oscilloscope
+  // GPIO01 is the SH line
+  // GPIO19 is the ICG line
+
 	exposureTimeHalf=exposureTime/2;
-  	GpioDataRegs.GPADAT.bit.GPIO19 = 1; //pull the [ICG] line high
+  	GpioDataRegs.GPADAT.bit.GPIO19 = 1; //pull the [ICG] line high, just so I know what state its in to begin with
 		
   	for(;;)
 	{
-
+  		//whether starting fresh, or looping, ICG is set HIGH
   		if (state==startCcdRead) {
-  			while (GpioDataRegs.GPADAT.bit.GPIO2==1){}
-  			GpioDataRegs.GPASET.bit.GPIO18 = 1; //test
+  			while (GpioDataRegs.GPADAT.bit.GPIO2==1){} // attempt to wait for a rising edge from the PWM master clock, not sure if this works correctly
+  			GpioDataRegs.GPASET.bit.GPIO18 = 1; //test, goes high at beginning for triggering oscilloscope
   			GpioDataRegs.GPASET.bit.GPIO19 = 1; //pull the [ICG] line high to warm up things, maybe
 			for (aa=0;aa<6;aa++){
 				for (aT=0;aT<exposureTime*2;aT++){} //wait 50% duty
-				GpioDataRegs.GPASET.bit.GPIO1 = 1; //pull the [ICG] line high to end exposure process
+				GpioDataRegs.GPASET.bit.GPIO1 = 1; //pull the [SH] line high to end exposure process
   				for (aT=0;aT<exposureTime;aT++){} //wait 50% duty
-  				GpioDataRegs.GPACLEAR.bit.GPIO1 = 1; //pull the [ICG] line high to end exposure process
+  				GpioDataRegs.GPACLEAR.bit.GPIO1 = 1; //pull the [SH] line high to end exposure process
 
 			}
 			for (aT=0;aT<(exposureTime*2)-1;aT++){} //wait almost 50% duty
   			//for (aT=0;aT<a;aT++){}
   			GpioDataRegs.GPACLEAR.bit.GPIO19 = 1; //pull the [ICG] line low to begin exposure process
   			//for (aT=0;aT<b;aT++){}
-  			GpioDataRegs.GPASET.bit.GPIO1 = 1; //electronic shutter line goes high
+  			GpioDataRegs.GPASET.bit.GPIO1 = 1; //electronic shutter [SH] line goes high
   			for (aT=0;aT<exposureTime;aT++){} //wait 50% duty
-  			GpioDataRegs.GPACLEAR.bit.GPIO1 = 1; //electronic shutter line goes low
+  			GpioDataRegs.GPACLEAR.bit.GPIO1 = 1; //electronic shutter [SH] line goes low
   			for (aT=0;aT<exposureTime;aT++){} //wait 50% duty
 
   			GpioDataRegs.GPASET.bit.GPIO19 = 1; //pull the [ICG] line high to end exposure process
@@ -321,16 +326,16 @@ Uint32 i =0;
   			elementTicker=0;
   			state=getElements;
   			for (aT=0;aT<exposureTime-1;aT++){} //wait 50% duty
-  			GpioDataRegs.GPASET.bit.GPIO1 = 1; //electronic shutter line goes high, continues to cycle
+  			GpioDataRegs.GPASET.bit.GPIO1 = 1; //electronic shutter [SH] line goes high, continues to cycle
 			for (aa=0;aa<numPixelElements;aa++){
   				for (aT=0;aT<exposureTime;aT++){} //wait 50% duty
-  				GpioDataRegs.GPATOGGLE.bit.GPIO1 = 1; //pull the [ICG] line high to end exposure process
+  				GpioDataRegs.GPATOGGLE.bit.GPIO1 = 1; //toggle [SH] line
 				for (aT=0;aT<exposureTime*2;aT++){} //wait 50% duty
-				GpioDataRegs.GPATOGGLE.bit.GPIO1 = 1; //pull the [ICG] line high to end exposure process
+				GpioDataRegs.GPATOGGLE.bit.GPIO1 = 1; //toggle [ICG] line
 			}
-			state=10;
+			state=startCcdRead;
 
-  			GpioDataRegs.GPACLEAR.bit.GPIO18 = 1; //test
+  			GpioDataRegs.GPACLEAR.bit.GPIO18 = 1; //test, goes low at end for watching on oscilloscope
 
   		}
 
