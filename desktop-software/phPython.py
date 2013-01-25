@@ -56,13 +56,13 @@ def getLambdaMax(jsonSpectrum):
 	yPeaks=[yData[pp] for pp in possiblePeaks]
 	xPeaks=possibleWavelengthsOfPeaks
 	
-	import openSpectrometerGUI
-	fig1=openSpectrometerGUI.plotter(xData, yData)
+	import openSpectrometer
+	fig1=openSpectrometer.plotter(xData, yData)
 	fig1.plotSelectable(xData, yData, 'k.', picker=5)
 	fig1.plot(xData, p(xData), 'w-')
 	fig1.plot(xPeaks, yPeaks, 'ro', ms=10)
 	
-	possHiPeak=openSpectrometerGUI.index_max(yPeaks)
+	possHiPeak=openSpectrometer.index_max(yPeaks)
 	fig1.selectPoint(xPeaks[possHiPeak], yPeaks[possHiPeak])
 	fig1.show()
 	class buttonHandler:
