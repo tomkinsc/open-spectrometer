@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launchConfiguration type="com.ti.ccstudio.debug.core.CCELaunchType">
+<stringAttribute key="org.eclipse.debug.core.source_locator_memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#13;&#10;&lt;sourceLookupDirector&gt;&#13;&#10;&lt;sourceContainers duplicates=&quot;false&quot;&gt;&#13;&#10;&lt;container memento=&quot;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;&amp;#13;&amp;#10;&amp;lt;default/&amp;gt;&amp;#13;&amp;#10;&quot; typeId=&quot;org.eclipse.debug.core.containerType.default&quot;/&gt;&#13;&#10;&lt;/sourceContainers&gt;&#13;&#10;&lt;/sourceLookupDirector&gt;&#13;&#10;"/>
+<booleanAttribute key="org.eclipse.debug.ui.ATTR_LAUNCH_IN_BACKGROUND" value="false"/>
+<booleanAttribute key="com.ti.ccstudio.debug.core.MRU_PROGRAM_S_ONLY" value="false"/>
+<stringAttribute key="org.eclipse.cdt.launch.DEBUGGER_ID" value="com.ti.ccstudio.debug.core.CCEDebugger"/>
+<stringAttribute key="CCEDebugOptions.DEBUG_PROPERTIES.Texas Instruments XDS100v2 USB Emulator_0/CLA_0" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot; ?&gt;&#10;&lt;PropertyValues&gt;&#10;&#10;  &lt;property id=&quot;ConnectOnStartup&quot;&gt;&#10;    &lt;curValue&gt;1&lt;/curValue&gt;&#10;  &lt;/property&gt;&#10;&#10;&lt;/PropertyValues&gt;&#10;"/>
+<stringAttribute key="org.eclipse.debug.ui.DISPLAY_NAME" value="openspec [Debug] - Texas Instruments XDS100v2 USB Emulator_0/C28xx"/>
+<stringAttribute key="org.eclipse.cdt.launch.DEBUGGER_REGISTER_GROUPS" value=""/>
+<stringAttribute key="CCEDebugOptions.DEBUG_PROPERTIES.Texas Instruments XDS100v2 USB Emulator_0/C28xx" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot; ?&gt;&#10;&lt;PropertyValues&gt;&#10;&#10;  &lt;property id=&quot;ConnectOnStartup&quot;&gt;&#10;    &lt;curValue&gt;1&lt;/curValue&gt;&#10;  &lt;/property&gt;&#10;&#10;&lt;/PropertyValues&gt;&#10;"/>
+<mapAttribute key="com.ti.ccstudio.debug.core.VARIABLE_STATE"/>
+<stringAttribute key="org.eclipse.cdt.launch.DEBUGGER_START_MODE" value="run"/>
+<stringAttribute key="com.ti.ccstudio.debug.core.DISPLAY_NAME_FORMAT" value="openspec [Debug] - {0}"/>
+<stringAttribute key="CCEDebugOptions.TARGET_CONFIGURATION_OPTION" value="full"/>
+<stringAttribute key="org.eclipse.cdt.launch.MEMORY_BLOCKS" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#13;&#10;&lt;memoryBlockExpressionList/&gt;&#13;&#10;"/>
+<stringAttribute key="com.ti.ccstudio.debug.core.MRU_PROGRAM_NAME" value="C:\Documents and Settings\Paul\My Documents\workspace\openspec\Debug\openspec.out"/>
+<stringAttribute key="CCEDebugOptions.CPU_NAME" value="Texas Instruments XDS100v2 USB Emulator_0/C28xx"/>
+<stringAttribute key="com.ti.ccstudio.debug.core.MRU_MODULES" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#13;&#10;&lt;modules&gt;&#13;&#10;&lt;module name=&quot;C:\Documents and Settings\Paul\My Documents\workspace\openspec\Debug\openspec.out&quot; time=&quot;Mon Nov 07 04:30:03 EST 2011&quot; time_long=&quot;1320658203375&quot;/&gt;&#13;&#10;&lt;/modules&gt;&#13;&#10;"/>
+<stringAttribute key="org.eclipse.cdt.launch.PROJECT_ATTR" value="openspec"/>
+<stringAttribute key="org.eclipse.cdt.launch.GLOBAL_VARIABLES" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#13;&#10;&lt;globalVariableList/&gt;&#13;&#10;"/>
+<stringAttribute key="org.eclipse.cdt.launch.PROGRAM_NAME" value="Debug/openspec.out"/>
+<stringAttribute key="CCEDebugOptions.CPU_ISA" value="TMS320C28xx"/>
+<stringAttribute key="com.ti.ccstudio.debug.core.BUILD_CONFIGURATION" value="Debug"/>
+<stringAttribute key="CCEDebugOptions.TARGET_CONFIGURATION_FILE" value="C:\Documents and Settings\Paul\My Documents\workspace\openspec\F28069.ccxml"/>
+<stringAttribute key="org.eclipse.debug.core.source_locator_id" value="com.ti.ccstudio.debug.core.sourceLocator"/>
+</launchConfiguration>
