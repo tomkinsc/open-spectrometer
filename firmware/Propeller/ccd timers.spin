@@ -65,9 +65,7 @@ org
 entry   add ctraval,  mClkPin
         add ctrbval,  SHpin
         shl mClkBit, mClkPin
-        shl mClkSenseBit, mClkSensePin 
         shl SHbit, SHpin
-        shl SHsenseBit, SHsensePin              
         shl ICGbit, ICGpin 
         or dira, SHbit                             'set SHpin as output
         or dira, ICGbit                            'set ICGbit as output
@@ -103,16 +101,16 @@ entry   add ctraval,  mClkPin
         or   outa, ICGbit                       'ICGbit was low, set it high... CCD analog readout begins NOW... (right edge of t1)
 
 :pixelLoop
-        waitpne     mClkSenseBit, mClkSenseBit   'wait til mClk pin goes low
-        waitpeq     mClkSenseBit, mClkSenseBit   'wait til mClk pin goes high
-        waitpne     mClkSenseBit, mClkSenseBit   'wait til mClk pin goes low
-        waitpeq     mClkSenseBit, mClkSenseBit   'wait til mClk pin goes high
+        waitpne     mClkBit, mClkBit   'wait til mClk pin goes low
+        waitpeq     mClkBit, mClkBit   'wait til mClk pin goes high
+        waitpne     mClkBit, mClkBit   'wait til mClk pin goes low
+        waitpeq     mClkBit, mClkBit   'wait til mClk pin goes high
         'ADC reading happens here/now
         or outa, testPinBit
-        waitpne     mClkSenseBit, mClkSenseBit   'wait til mClk pin goes low
-        waitpeq     mClkSenseBit, mClkSenseBit   'wait til mClk pin goes high
-        waitpne     mClkSenseBit, mClkSenseBit   'wait til mClk pin goes low
-        waitpeq     mClkSenseBit, mClkSenseBit   'wait til mClk pin goes high
+        waitpne     mClkBit, mClkBit   'wait til mClk pin goes low
+        waitpeq     mClkBit, mClkBit   'wait til mClk pin goes high
+        waitpne     mClkBit, mClkBit   'wait til mClk pin goes low
+        waitpeq     mClkBit, mClkBit   'wait til mClk pin goes high
         andn outa, testPinBit
         djnz pixelCounter, #:pixelLoop
 
@@ -136,15 +134,11 @@ numMasterClkCycles long 0
 
 'GPIO pins
 mClkPin       long 7    'CCD master clock pin
-mClkSensePin  long 6    'loopback from mClkPin, used for sensing transitions
 SHpin         long 5    'CCD SH pin                                                                 
-SHsensePin    long 4    'loopback from SHpin, used for sensing transitions
 ICGpin        long 8    'CCD ICG pin
 
 mClkBit       long 1
-mClkSenseBit  long 1
 SHbit         long 1
-SHsenseBit    long 1
 ICGbit        long 1
 
 testPinBit    long 1<<2
