@@ -54,11 +54,11 @@ PUB go
 
   'calculate the required ICGwait parameters, based on exposure time, system clock speed, required chip delays
 
-  inExposureVal := 22                              '22 hardcoded temporarily, get this from settings
-  exposureJitterFreeValue := 1<<inExposureVal      'frqb gets set with this value
-  ICGwait :=  ((1<<(32-inExposureVal))/2)/4
-                
-  cognew(@entry, @ICGwait) 'start assembly cog       
+  inExposureVal := 22                              '22 hardcoded temporarily, would normally get this from settings or user
+  exposureJitterFreeValue := 1<<inExposureVal      'frqb gets set with this value  (twice t3 in TCD1304AP datasheet, aka Tint)
+  ICGwait :=  ((1<<(32-inExposureVal))/2)/4        
+
+  cognew(@entry, @ICGwait) 'start assembly cog at 'entry', pass ICGwait to par
 DAT
 'assembly cog fetches the value in parameter for PWM percentage
 org
@@ -73,33 +73,34 @@ entry   add ctraval,  mClkPin
         or dira, ICGbit                            'set ICGbit as output
         or dira, mClkBit                           'set mClkPin as output
         or dira, testPinBit
-        'or outa, ICGbit                            'set ICG high to begin
+        or outa, ICGbit                            'set ICG high to begin
 
         'rdlong exposureTime, @exposureJitterFreeValue
         mov frqa, masterFreq  
         mov frqb, exposureTime  '
-        rdlong localICGwait1, par    'move calculated ICGwait to a local variable
+
+        rdlong localICGwait1, par    'move calculated ICGwait to a local variable, par is the pointer to ICGwait, passed with cognew(@entry, @ICGwait)
         
         mov ctra, ctraval             'establish counter A mode and APIN        
 
-        mov localICGwait2, localICGwait1
-        sub localICGwait1, #6  'subtract 6 instructions from the ICGwait jump counter(cpu cycles) from register 19
-        sub localICGwait2, #2  'subtract 6 instructions from the ICGwait jump counter(cpu cycles) from register 19
+        mov localICGwait2, localICGwait1  '(t1 in TCD1304AP datasheet, says this should typically be 5000ns)  
+        sub localICGwait1, #6  'subtract 6 instructions (cpu cycles) from the ICGwait jump counter -- this is due to setup time require to save these 
+        sub localICGwait2, #9  'subtract 2 instructions (cpu cycles) from the ICGwait jump counter 
         mov ctrb, ctrbval   'both counters are now going, master clock and SH line
 :ccdStart                                       'if first time through this loop, this ensures pixel integration
                                                 '(SH/tINT follows SH being high)
-        waitpeq     SHsenseBit, SHsenseBit      'wait til SHpin goes high
+        waitpeq     SHbit, SHbit      'wait til SHpin goes high
         mov pixelCounter, numActivePixels
-        waitpne     SHsenseBit, SHsenseBit      'wait til SHpin goes low
+        waitpne     SHbit, SHbit      'wait til SHpin goes low
 :ICGwaitLoop1                                   'wait 100ns less than 1/2 SH period ((2^32)/frqb==num sys clock cycles in SH period)
                                                 'ICGdelay = clkCountLenSH/2/4 'period/2, 4 cycles per djnz instruction
         djnz localICGwait1, #:ICGwaitLoop1
-        andn     outa, ICGbit                   'ICGbit was high to begin, set it low here
-        waitpeq     SHsenseBit, SHsenseBit      'wait til SHpin goes high
-        waitpne     SHsenseBit, SHsenseBit      'wait til SHpin goes low
+        andn     outa, ICGbit         'ICGbit was high to begin, set it low here (left edge of t2 in TCD1304AP datasheet)
+        waitpeq     SHbit, SHbit      'wait til SHpin goes high     (right edge of t2 in TCD1304AP datasheet)
+        waitpne     SHbit, SHbit      'wait til SHpin goes low      (right edge of t3 in TCD1304AP datasheet) (left edge of t1)
 :ICGwaitLoop2
         djnz localICGwait2, #:ICGwaitLoop2
-        or   outa, ICGbit                       'ICGbit was low, set it high... CCD analog readout begins NOW...
+        or   outa, ICGbit                       'ICGbit was low, set it high... CCD analog readout begins NOW... (right edge of t1)
 
 :pixelLoop
         waitpne     mClkSenseBit, mClkSenseBit   'wait til mClk pin goes low
@@ -118,6 +119,10 @@ entry   add ctraval,  mClkPin
                                                 'need to take reading in 2 masterClk cycles
                                                 'because each pixel is 4 cycles, catch it in the middle
                                                 'FUTURE if the pixel readout period were oversampled, it MIGHT improve read quality
+        rdlong localICGwait1, par
+        mov localICGwait2, localICGwait1
+        sub localICGwait1, #6  'subtract 6 instructions (cpu cycles) from the ICGwait jump counter -- this is due to setup time require to save these 
+        sub localICGwait2, #9  'subtract 9 instructions (cpu cycles) from the ICGwait jump counter
         
         jmp #:ccdStart
 ':pixelLoop
@@ -134,7 +139,7 @@ mClkPin       long 7    'CCD master clock pin
 mClkSensePin  long 6    'loopback from mClkPin, used for sensing transitions
 SHpin         long 5    'CCD SH pin                                                                 
 SHsensePin    long 4    'loopback from SHpin, used for sensing transitions
-ICGpin        long 8    'CCD ICD pin
+ICGpin        long 8    'CCD ICG pin
 
 mClkBit       long 1
 mClkSenseBit  long 1
