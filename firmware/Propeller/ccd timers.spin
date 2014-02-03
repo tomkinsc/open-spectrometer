@@ -88,7 +88,7 @@ entry   add ctraval,  mClkPin
 :ccdStart                                       'if first time through this loop, this ensures pixel integration
                                                 '(SH/tINT follows SH being high)
         waitpeq     SHbit, SHbit      'wait til SHpin goes high
-        mov pixelCounter, numActivePixels
+        mov pixelCounter, numPixelElementsPerReadout
         waitpne     SHbit, SHbit      'wait til SHpin goes low
 :ICGwaitLoop1                                   'wait 100ns less than 1/2 SH period ((2^32)/frqb==num sys clock cycles in SH period)
                                                 'ICGdelay = clkCountLenSH/2/4 'period/2, 4 cycles per djnz instruction
@@ -133,9 +133,20 @@ ctrbval long %00100 << 26 'NCO/PWM BPIN=6
 numMasterClkCycles long 0
 
 'GPIO pins
-mClkPin       long 7    'CCD master clock pin
-SHpin         long 5    'CCD SH pin                                                                 
-ICGpin        long 8    'CCD ICG pin
+mClkPin       long 6    'CCD master clock pin
+SHpin         long 7    'CCD SH pin                                                                 
+ICGpin        long 5    'CCD ICG pin
+
+op3_pin long        21     'also SDO
+op2_pin long         20
+op1_pin long         18
+op0_pin long          19
+
+SCK long 25
+SDI long 2
+SEN long 3
+mCLK_adc  long 26
+VSMP long    27
 
 mClkBit       long 1
 SHbit         long 1
@@ -149,7 +160,8 @@ exposureTime long 4194304      '~10uSecs
 tmp1 long 128                  'system
 halfExposureTime long 2097152
 
-numActivePixels long 3648   
+numPixelElementsPerReadout long 3694
+numActivePixels long 3648 
 
 maxVal long $FFFF
 
