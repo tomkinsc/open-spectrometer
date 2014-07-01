@@ -1,8 +1,8 @@
 {
-	"openSpectrometer experiment config file" : "version 0",
-	"openSpectrometer experiment name" : "pH determination",
-	"README" : "execute with python phPython.py ./openSpectrometerProgramCfg.txt",
-	"acidFileList" : "acid.txt,acid2.txt,acid3.txt",
-	"baseFileList" : "base.txt,base2.txt,base3.txt",
-	"bufferFileList" : "buffer.txt,buffer2.txt,buffer3.txt"
+"openSpectrometer experiment config file" : "version 0",
+"openSpectrometer experiment name" : "pH determination",
+"README" : "execute with python phPython.py ./openSpectrometerProgramCfg.txt",
+"acidFileList" : "acid.txt,acid2.txt,acid3.txt",
+"baseFileList" : "base.txt,base2.txt,base3.txt",
+"bufferFileList" : "buffer.txt,buffer2.txt,buffer3.txt"
 }
